@@ -11,18 +11,18 @@ func Dial(rawurl string) (*ethclient.Client, error) {
 	return ethclient.Dial(rawurl)
 }
 
-func GetBalance(rawurl string, contractAddress common.Address, account common.Address) (*big.Int, error) {
+func GetBalance(rawurl string, contractAddress string, account string) (*big.Int, error) {
 	cli, err := ethclient.Dial(rawurl)
 	if err != nil {
 		return &big.Int{}, err
 	}
 
-	contractIns, err := erc20.NewErc20(contractAddress, cli)
+	contractIns, err := erc20.NewErc20(common.HexToAddress(contractAddress), cli)
 	if err != nil {
 		return &big.Int{}, err
 	}
 
-	b, err := contractIns.BalanceOf(nil, account)
+	b, err := contractIns.BalanceOf(nil, common.HexToAddress(account))
 	if err != nil {
 		return &big.Int{}, err
 	}
